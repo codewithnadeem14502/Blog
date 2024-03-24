@@ -45,7 +45,7 @@ export const Register = async (req, res) => {
   }
 };
 export const Logout = (req, res) => {
-  res.clearCookie("access-token");
+  // localStorage.removeItem("access-token");
 
   res.json({ message: "Logout Successful" });
 };
