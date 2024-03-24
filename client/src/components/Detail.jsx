@@ -11,6 +11,7 @@ const Detail = ({ id, file, title, description, username }) => {
   const content = HTMLReactParser(description);
   const navigate = useNavigate();
   const user = useContext(userContext);
+  // console.log("Detials ", user);
   const { enqueueSnackbar } = useSnackbar();
   const URL = import.meta.env.VITE_BACKEND_URL;
   const handleDeletePost = async (id) => {
