@@ -19,8 +19,14 @@ const App = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
+    const token = localStorage.getItem("access-token");
+    // console.log("UseContext ", token);
     axios
-      .get(`${URL}/api/v1/user/`)
+      .get(`${URL}/api/v1/user/`, {
+        headers: {
+          Authorization: token,
+        },
+      })
       .then((response) => {
         setUser(response.data);
       })

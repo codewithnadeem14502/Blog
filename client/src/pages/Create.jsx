@@ -22,23 +22,40 @@ const Create = () => {
     formData.append("description", description);
     formData.append("file", file);
     formData.append("username", user.username);
+
     try {
-      const respond = await axios.post("${URL}/api/v1/post/create", formData);
+      const token = localStorage.getItem("access-token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      const config = {
+        headers: {
+          Authorization: token,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const respond = await axios.post(
+        `${URL}/api/v1/post/create`,
+        formData,
+        config
+      );
 
       const message = respond.data.message;
-      // console.log("msss " + message);
-      if (message == "Created Successfully") {
+      if (message === "Created Successfully") {
         enqueueSnackbar(message, { variant: "success" });
         navigate("/");
       } else {
         enqueueSnackbar(message, { variant: "error" });
-        // console.log(message);
       }
     } catch (error) {
-      // console.log(error);
-      enqueueSnackbar(error, { variant: "error" });
+      enqueueSnackbar(error.message || "An error occurred", {
+        variant: "error",
+      });
     }
   };
+
   const handleDescription = (content) => {
     const parsedContent = HTMLReactParser(content);
     setDescription(parsedContent);

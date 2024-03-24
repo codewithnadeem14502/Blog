@@ -21,7 +21,7 @@ export const Login = async (req, res) => {
     { id: user._id, username: user.username, email: user.email },
     "secret"
   );
- //res.cookie('access-token', token, { httpOnly: true, sameSite: 'None', secure: true });
+  //res.cookie('access-token', token, { httpOnly: true, sameSite: 'None', secure: true });
 
   res.json({ token, message: "Login Successfully" });
 };
@@ -51,5 +51,6 @@ export const Logout = (req, res) => {
 };
 
 export const Profile = async (req, res) => {
+  // console.log("profile ");
   return res.json({ username: req.username, email: req.email });
 };

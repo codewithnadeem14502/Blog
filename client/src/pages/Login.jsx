@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useSnackbar } from "notistack";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  const [cookies, setCookie] = useCookies(["accesstoken"]);
-
-  const navigate = useNavigate();
   const URL = import.meta.env.VITE_BACKEND_URL;
   const HandleSubmit = async (e) => {
     e.preventDefault();
@@ -20,11 +16,12 @@ const Login = () => {
         password,
       });
 
-      setCookie("access-token", respond.data.token);
+      const accessToken = respond.data.token;
+      console.log("token from login ", accessToken);
+      localStorage.setItem("access-token", accessToken); // Store token in local storage
 
       const message = respond.data.message;
-      if (message == "Login Successfully") {
-        // navigate("/");
+      if (message === "Login Successfully") {
         enqueueSnackbar(message, { variant: "success" });
         setTimeout(() => {
           window.location.href = "/";
@@ -33,7 +30,9 @@ const Login = () => {
         enqueueSnackbar(message, { variant: "error" });
       }
     } catch (error) {
-      enqueueSnackbar(error, { variant: "error" });
+      enqueueSnackbar(error.message || "An error occurred", {
+        variant: "error",
+      });
     }
   };
 
