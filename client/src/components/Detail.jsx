@@ -11,7 +11,7 @@ const Detail = ({ id, file, title, description, username }) => {
   const content = HTMLReactParser(description);
   const navigate = useNavigate();
   const user = useContext(userContext);
-  // console.log("Detials ", user);
+  console.log("Detials ", user);
   const { enqueueSnackbar } = useSnackbar();
   const URL = import.meta.env.VITE_BACKEND_URL;
   const handleDeletePost = async (id) => {
@@ -43,7 +43,7 @@ const Detail = ({ id, file, title, description, username }) => {
 
       <div className="flex flex-col items-center text-center mb-6">
         <p className="font-semibold text-lg mb-2">Created by: {username}</p>
-        {username === user.username && (
+        {username === user?.username && (
           <div className="mt-4 flex space-x-4">
             <Link
               className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
