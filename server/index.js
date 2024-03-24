@@ -25,7 +25,7 @@ app.use(express.static(path.join(path.resolve(), "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [process.env.HOST_URL],
     // origin: ["https://quillify-iota.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders:
@@ -60,5 +60,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to my blog server!");
 });
 app.listen(PORT, () => {
+  // console.log(process.env.HOST_URL);
   console.log("Server is working");
 });
