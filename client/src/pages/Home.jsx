@@ -6,9 +6,7 @@ const Home = () => {
   const URL = import.meta.env.VITE_BACKEND_URL;
   // console.log(" URL ", import.meta.env.VITE_BACKEND_URL);
   const [posts, setPosts] = useState([]);
-  // {
 
-  // }
   useEffect(() => {
     const fetchData = async () => {
       try {

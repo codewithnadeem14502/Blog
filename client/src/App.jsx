@@ -30,7 +30,7 @@ const App = () => {
       .then((response) => {
         setUser(response.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("Error from appjsx ", error));
   }, []);
 
   return (

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import google from "../../src/assets/google.svg";
 import { useSnackbar } from "notistack";
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,8 @@ const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const URL = import.meta.env.VITE_BACKEND_URL;
+
+  const [googleLoginCompleted, setGoogleLoginCompleted] = useState(false);
   const HandleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -35,11 +38,16 @@ const Login = () => {
       });
     }
   };
+  const loginWithGoogle = () => {
+    window.open(`${URL}/auth/google/callback`, "_self");
+    setGoogleLoginCompleted(true);
+    // console.log("google open checker ", setGoogleLoginCompleted);
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="border  p-8 rounded  w-96">
+        <h2 className="text-2xl font-bold mb-5">Login</h2>
         <form onSubmit={HandleSubmit}>
           <div className="mb-4">
             <label
@@ -80,11 +88,25 @@ const Login = () => {
           </Link>
           <button
             type="submit"
-            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            className="bg-slate-100 border text-lg text-black py-3 px-2 font-bold w-full rounded hover:bg-slate-300"
           >
             Login
           </button>
         </form>
+        <div className="flex justify-center items-center my-5">
+          <hr className="border-gray-400 w-[30%] mr-2" />
+          <p className="text-gray-600 mx-2 font-medium">or Sign up </p>
+          <hr className="border-gray-400 w-[30%]  ml-2" />
+        </div>
+        <div className="my-5 flex justify-center">
+          <button
+            className="w-full  text-lg bg-white border text-black shadow-sm px-4 py-3  rounded-md flex items-center justify-center"
+            onClick={loginWithGoogle}
+          >
+            <img src={google} alt="google" className="mr-2" />
+            Google
+          </button>
+        </div>
       </div>
     </div>
   );

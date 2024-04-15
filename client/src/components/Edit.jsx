@@ -15,7 +15,7 @@ const Edit = () => {
     const getDetails = async () => {
       try {
         const respond = await axios.get(`${URL}/api/v1/post/detailpost/${id}`);
-      
+
         setTitle(respond.data.title);
         setDescription(respond.data.description);
       } catch (error) {
@@ -56,7 +56,7 @@ const Edit = () => {
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-600"
+              className="block text-lg font-medium text-gray-600"
             >
               Title
             </label>
@@ -73,7 +73,7 @@ const Edit = () => {
           <div>
             <label
               htmlFor="desc"
-              className="block text-sm font-medium text-gray-600"
+              className="block text-lg  font-medium text-gray-600"
             >
               Description
             </label>

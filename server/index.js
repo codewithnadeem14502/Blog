@@ -7,7 +7,13 @@ import path from "path";
 import userRouter from "./Routes/User.js";
 import postRouter from "./Routes/Post.js";
 import { isAuth } from "./middlewars/isAuth.js";
+import passport from "passport";
+import session from "express-session";
 import dotenv from "dotenv";
+import GoogleOAuth2Strategy from "passport-google-oauth2";
+import UserModal from "./modals/User.js";
+import jwt from "jsonwebtoken";
+
 dotenv.config();
 
 const app = express();
@@ -52,10 +58,105 @@ app.use((req, res, next) => {
   res.cookie("sameSiteCookie", "value", { sameSite: "none", secure: true });
   next();
 });
+app.use(
+  session({
+    secret: "asdklfjweiorweo1234243523",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+//  passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
+function generateRandomPassword() {
+  const min = 100000; // Minimum 6-digit number
+  const max = 999999; // Maximum 6-digit number
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+// Passport Configuration
+passport.use(
+  new GoogleOAuth2Strategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+      scope: ["profile", "email"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      // Passport callback function
+      // You can handle user creation or authentication logic here
+      try {
+        let user = await UserModal.findOne({ googleId: profile.id });
+        // console.log("Profile ", profile);
+        if (!user) {
+          user = new UserModal({
+            googleId: profile.id,
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            img: profile.photos[0].value,
+            password: generateRandomPassword(),
+          });
+
+          await user.save();
+        }
+
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
 //app.use(isAuth);
 
+// initial google auth login
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// call back url from which we going to hit
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:5173",
+    failureRedirect: "http://localhost:5173/login",
+  })
+);
+
+// user from  {
+//   _id: '6604bc031c4984eba5a07120',
+//   googleId: '115397764607968598669',
+//   username: 'md nadeem',
+//   email: 'mdnadeem14502@gmail.com',
+//   img: 'https://lh3.googleusercontent.com/a/ACg8ocI0PdJkDTJaLFlF-GyErIrzdAgyPY88IElmfp11c8dAGb0=s96-c',
+//   __v: 0
+// }
+
+app.get("/login/sucess", async (req, res) => {
+  console.log("user from ", req.user);
+  const user = req?.user;
+  if (user) {
+    const token = jwt.sign(
+      { id: user._id, username: user.username, email: user.email },
+      "secret"
+    );
+    // console.log("Token ", token);
+    res.status(200).json({ message: "user Login", token });
+  } else {
+    res.status(400).json({ message: "Not Authorized" });
+  }
+});
 app.get("/", (req, res) => {
   res.send("Welcome to my blog server!");
 });

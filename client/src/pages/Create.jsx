@@ -62,13 +62,13 @@ const Create = () => {
   };
   return (
     <div className="container mx-auto my-8">
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded shadow-md">
+      <div className="max-w-2xl mx-auto bg-white border p-8 rounded ">
         <h2 className="text-2xl font-semibold mb-4">Create a New Post</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-600"
+              className="block text-lg font-medium text-gray-600"
             >
               Title
             </label>
@@ -84,18 +84,11 @@ const Create = () => {
           <div>
             <label
               htmlFor="desc"
-              className="block text-sm font-medium text-gray-600"
+              className="block text-lg font-medium text-gray-600"
             >
               Description
             </label>
-            {/* <textarea
-              name="desc"
-              id="desc"
-              className="mt-1 p-2 border rounded w-full"
-              rows="5"
-              placeholder="Write your post description here"
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea> */}
+
             <JoditEditor
               ref={editor}
               value={description}
@@ -104,7 +97,7 @@ const Create = () => {
               onChange={(description) => setDescription(description)}
             />
           </div>
-          <div>
+          <div className="my-5 py-5">
             <label
               htmlFor="file"
               className="block text-sm font-medium text-gray-600"
@@ -121,7 +114,7 @@ const Create = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             Post
           </button>

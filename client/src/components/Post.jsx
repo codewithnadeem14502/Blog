@@ -13,7 +13,7 @@ const Post = ({ id, file, title, description }) => {
   return (
     <div
       key={id}
-      className="flex flex-col mb-8 p-6 bg-white rounded-lg hover:shadow-lg transition duration-300 border border-gray-300 sm:flex-row"
+      className="flex flex-col mb-8 p-6 bg-white rounded-lg hover:shadow-lg hover:border-black transition duration-300 border border-gray-300 sm:flex-row"
     >
       <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
         <img

@@ -1,9 +1,28 @@
 // src/components/Navbar.js
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { userContext } from "../App";
 import Logout from "../pages/Logout";
+import axios from "axios";
 const Navbar = () => {
+  const getUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:9000/login/sucess", {
+        withCredentials: true,
+      });
+
+      const accessToken = response.data.token;
+      localStorage.setItem("access-token", accessToken);
+      // window.location.reload();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const user = useContext(userContext);
   // console.log("user ,", user);
   return (

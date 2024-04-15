@@ -37,36 +37,39 @@ const Detail = ({ id, file, title, description, username }) => {
         <img
           src={`${URL}/Images/${file}`}
           alt={title}
-          className="rounded-lg object-cover w-[90%] h-[400px] transition-transform transform hover:scale-105 border border-black"
+          className="rounded-lg object-cover w-[90%] h-[400px] transition-transform transform  border border-black"
         />
       </div>
 
-      <div className="flex flex-col items-center text-center mb-6">
-        <p className="font-semibold text-lg mb-2">Created by: {username}</p>
-        {username === user?.username && (
-          <div className="mt-4 flex space-x-4">
-            <Link
-              className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
-              to={`/editpost/${id}`}
-            >
-              <FaEdit className="mr-2" />
-              Edit
-            </Link>
+      <div className="flex flex-col items-center text-center mb-6 ">
+        <div className="flex justify-center items-center text-center space-x-5 my-2">
+          <p className="font-semibold text-lg mb-2 bg-slate-200 rounded-full p-5">
+            Created by: {username}
+          </p>
+          {username === user?.username && (
+            <div className="mt-4 flex space-x-4 my-5">
+              <Link
+                className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+                to={`/editpost/${id}`}
+              >
+                <FaEdit className="mr-2" />
+                Edit
+              </Link>
 
-            <button
-              className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:shadow-outline-red"
-              onClick={() => handleDeletePost(id)}
-            >
-              <MdDelete className="mr-2" />
-              Delete
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="bg-slate-100 rounded-md">
-        <h1 className="text-4xl font-bold mb-4 px-5">{title}</h1>
-        <div className="text-gray-800 px-5 mb-6">{content}</div>
+              <button
+                className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:shadow-outline-red"
+                onClick={() => handleDeletePost(id)}
+              >
+                <MdDelete className="mr-2" />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="bg-slate-100 w-[90%] rounded-md text-start ">
+          <h1 className="text-4xl font-bold my-10 px-5">{title}</h1>
+          <div className="text-gray-800 px-5 mb-6">{content}</div>
+        </div>
       </div>
     </div>
   );
