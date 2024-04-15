@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 });
 app.use(
   session({
-    secret: "asdklfjweiorweo1234243523",
+    secret: process.env.SECERT,
     resave: false,
     saveUninitialized: false,
   })
@@ -124,13 +124,13 @@ app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-
+const URL = process.env.HOST_URL;
 // call back url from which we going to hit
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5173",
-    failureRedirect: "http://localhost:5173/login",
+    successRedirect: process.env.HOST_URL,
+    failureRedirect: `${URL}/login`,
   })
 );
 
