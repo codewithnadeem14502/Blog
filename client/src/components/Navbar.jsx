@@ -5,9 +5,10 @@ import { userContext } from "../App";
 import Logout from "../pages/Logout";
 import axios from "axios";
 const Navbar = () => {
+  const URL = import.meta.env.VITE_BACKEND_URL;
   const getUser = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/login/sucess", {
+      const response = await axios.get(`${URL}/login/sucess`, {
         withCredentials: true,
       });
 
